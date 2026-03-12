@@ -87,6 +87,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h1>Hyperelastic Image Registration via Physics-Informed Neural Networks</h1>
 <p><a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" class="img-fluid" alt="Python 3.8+"></a> <a href="https://github.com/google/jax"><img src="https://img.shields.io/badge/JAX-0.4.13+-red.svg" class="img-fluid" alt="JAX"></a> <a href="https://github.com/patrick-kidger/equinox"><img src="https://img.shields.io/badge/Equinox-0.10.6+-green.svg" class="img-fluid" alt="Equinox"></a> <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" class="img-fluid" alt="License: MIT"></a></p>
 <p>This repository contains a <strong>single‑file implementation</strong> of a complete pipeline for hyperelastic image registration and material parameter identification using physics‑informed neural networks (PINNs). It reproduces and extends the work of Gao &amp; Desai (2010) – <em>“Estimating zero‑strain states of very soft tissue under gravity loading using digital image correlation”</em> – by replacing the two‑stage DIC+curve‑fitting approach with an end‑to‑end PINN that directly learns the displacement field and the Ogden material parameters from image data.</p>
+<p><img src="pinn.jpg" class="img-fluid"></p>
 <section id="table-of-contents" class="level2">
 <h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
 <ul>
@@ -146,7 +147,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <ol type="1">
 <li><p><strong>Clone the repository</strong> (or simply download the single script):</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/yourusername/hyperelastic-registration-pinn.git</span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode bash code-with-copy"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">git</span> clone https://github.com/gk408829/Hyperelastic-Image-Registration.git</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="bu">cd</span> hyperelastic-registration-pinn</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
 <li><p><strong>Create a virtual environment (recommended):</strong></p></li>
 </ol>

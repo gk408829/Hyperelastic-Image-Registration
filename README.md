@@ -7,6 +7,8 @@
 
 This repository contains a **single‑file implementation** of a complete pipeline for hyperelastic image registration and material parameter identification using physics‑informed neural networks (PINNs). It reproduces and extends the work of Gao & Desai (2010) – *“Estimating zero‑strain states of very soft tissue under gravity loading using digital image correlation”* – by replacing the two‑stage DIC+curve‑fitting approach with an end‑to‑end PINN that directly learns the displacement field and the Ogden material parameters from image data.
 
+![](pinn.jpg)
+
 ## Table of Contents
 
 - [Overview](#overview)
