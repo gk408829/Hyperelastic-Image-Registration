@@ -1,0 +1,352 @@
+./hyperelastic_registration_pinn.py
+======================================================================
+Hyperelastic Image Registration Pipeline
+Medical Image Analysis Project
+======================================================================
+JAX devices: [CpuDevice(id=0)]
+Quick mode: False
+
+Step 1: Forward FEM simulation...
+  Mesh: 6x10 elements
+  Material: mu=72.095, alpha=5.4067
+  Density: 972.0 kg/m3
+  JIT warmup...
+  P(1.001*I) = [0.43076118 0.         0.         0.43076118]
+  |dP/dF| = 428.962387
+  JIT warmup done
+  Precomp 1/3, uy=-0.333mm
+  Precomp 2/3, uy=-0.667mm
+  Precomp 3/3, uy=-1.000mm
+  Tension 1/10, uy=-0.200mm
+  Tension 2/10, uy=0.600mm
+  Tension 3/10, uy=1.400mm
+  Tension 4/10, uy=2.200mm
+  Tension 5/10, uy=3.000mm
+  Tension 6/10, uy=3.800mm
+  Tension 7/10, uy=4.600mm
+  Tension 8/10, uy=5.400mm
+  Tension 9/10, uy=6.200mm
+  Tension 10/10, uy=7.000mm
+  Done: 14 steps
+  Done in 3.9s
+  77 nodes, 120 elements, 14 steps
+
+Step 2: Computing reaction forces...
+  Computed reaction forces for 14 steps
+  Force range: [-0.000000, 2.811865] Pa·m
+  Done in 1.9s
+  Saved → outputs/07_force_displacement.png
+  Saved → outputs/08_deformed_mesh.png
+
+Step 3: Generating synthetic tissue images...
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+  Saved image sequence → outputs/01_synthetic_images.png
+  Saved reference + mesh → outputs/02_reference_mesh.png
+  Done in 6.0s
+
+Step 4: Computing incremental strain fields...
+  Saved → outputs/03_incremental_strain.png
+  Done in 2.7s
+
+Step 5: Training hyperelastic image registration PINN...
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 500
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.306e-01 img=1.06e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [  anchor]   500 | L=4.743e-01 img=9.44e-03 phy=3.22e+01 bc=2.43e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [  anchor]  1000 | L=5.613e-01 img=1.12e-02 phy=9.98e+02 bc=2.42e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [  anchor]  1500 | L=5.196e-01 img=1.03e-02 phy=9.27e+01 bc=2.42e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [  anchor]  2000 | L=5.347e-01 img=1.06e-02 phy=1.19e+04 bc=2.41e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [  anchor]  2500 | L=5.677e-01 img=1.13e-02 phy=5.74e+03 bc=2.41e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]  3000 | L=3.892e+05 img=1.06e-02 phy=3.89e+05 bc=2.41e-05 frc=1.93e-01 | μ=37.18 α=3.903
+  [ physics]  3500 | L=1.411e+05 img=1.04e-02 phy=1.41e+05 bc=2.42e-05 frc=9.23e-07 | μ=71.36 α=5.448
+  [ physics]  4000 | L=3.998e+05 img=1.25e-02 phy=4.00e+05 bc=2.42e-05 frc=9.76e-09 | μ=72.02 α=5.411
+  [ physics]  4500 | L=7.542e+04 img=1.08e-02 phy=7.54e+04 bc=2.42e-05 frc=2.57e-11 | μ=72.09 α=5.407
+  [ physics]  5000 | L=5.231e+04 img=1.08e-02 phy=5.23e+04 bc=2.42e-05 frc=1.06e-14 | μ=72.09 α=5.407
+  [ physics]  5500 | L=8.414e+04 img=1.25e-02 phy=8.41e+04 bc=2.42e-05 frc=3.62e-19 | μ=72.09 α=5.407
+  [ physics]  6000 | L=4.715e+04 img=9.19e-03 phy=4.71e+04 bc=2.42e-05 frc=3.99e-25 | μ=72.09 α=5.407
+  [ physics]  6500 | L=2.372e+04 img=1.04e-02 phy=2.37e+04 bc=2.42e-05 frc=6.70e-31 | μ=72.09 α=5.407
+  [ physics]  7000 | L=5.595e+03 img=1.11e-02 phy=5.59e+03 bc=2.42e-05 frc=4.97e-31 | μ=72.09 α=5.407
+  [ physics]  7500 | L=3.819e+02 img=1.01e-02 phy=3.81e+02 bc=2.42e-05 frc=2.56e-31 | μ=72.09 α=5.407
+  [identify]  8000 | L=7.216e+02 img=1.14e-02 phy=7.21e+02 bc=2.42e-05 frc=2.24e-31 | μ=72.09 α=5.407
+  [identify]  8500 | L=4.728e+00 img=1.16e-02 phy=4.49e+00 bc=2.43e-05 frc=1.02e-27 | μ=72.10 α=5.407
+  [identify]  9000 | L=1.661e+00 img=1.06e-02 phy=1.45e+00 bc=2.44e-05 frc=2.39e-31 | μ=72.09 α=5.407
+  [identify]  9500 | L=1.427e+00 img=1.22e-02 phy=1.18e+00 bc=2.44e-05 frc=1.13e-08 | μ=72.08 α=5.406
+  [identify] 10000 | L=1.255e+00 img=1.08e-02 phy=1.04e+00 bc=2.44e-05 frc=6.82e-16 | μ=72.09 α=5.407
+  [identify] 10500 | L=1.271e+00 img=1.19e-02 phy=1.03e+00 bc=2.45e-05 frc=1.47e-27 | μ=72.09 α=5.407
+  [identify] 11000 | L=1.248e+00 img=1.13e-02 phy=1.02e+00 bc=2.45e-05 frc=2.31e-24 | μ=72.09 α=5.407
+  [identify] 11500 | L=1.211e+00 img=1.05e-02 phy=1.00e+00 bc=2.45e-05 frc=2.34e-22 | μ=72.09 α=5.407
+  [identify] 12000 | L=1.254e+00 img=1.13e-02 phy=1.03e+00 bc=2.45e-05 frc=1.70e-24 | μ=72.09 α=5.407
+  [identify] 12500 | L=1.196e+00 img=9.63e-03 phy=1.00e+00 bc=2.45e-05 frc=4.90e-20 | μ=72.10 α=5.407
+  [identify] 13000 | L=1.285e+00 img=1.23e-02 phy=1.04e+00 bc=2.45e-05 frc=1.44e-20 | μ=72.09 α=5.407
+  [identify] 13500 | L=1.246e+00 img=1.19e-02 phy=1.01e+00 bc=2.45e-05 frc=4.12e-21 | μ=72.09 α=5.407
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  Saved → outputs/04_registration_diagnostics.png
+  Saved → outputs/05_registration_result.png
+  Saved → outputs/09_pinn_displacement_error.png
+  Registration training: 1621.8s
+
+Step 6: Training v9 PINN (displacement-based, for comparison)...
+  JIT-compiling v9 step...
+    v9 iter 0: μ=36.05 α=3.785
+    v9 iter 2000: μ=37.12 α=3.898
+    v9 iter 4000: μ=72.09 α=5.407
+    v9 iter 6000: μ=72.09 α=5.407
+    v9 iter 8000: μ=72.10 α=5.407
+    v9 iter 10000: μ=72.10 α=5.407
+  v9 result: μ=72.0909 α=5.4064
+  v9 training: 1237.9s
+  Saved → outputs/06_comparison_v9_vs_reg.png
+
+Step 7: Noise sensitivity analysis...
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.129e-01 img=1.02e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.482e+00 img=1.03e-02 phy=9.64e-01 bc=2.44e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.000: μ err=0.0%, α err=0.0%
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.314e-01 img=1.06e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.529e+00 img=1.06e-02 phy=9.96e-01 bc=2.44e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.002: μ err=0.0%, α err=0.0%
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.348e-01 img=1.06e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.451e+00 img=1.05e-02 phy=9.21e-01 bc=2.44e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.005: μ err=0.0%, α err=0.0%
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.420e-01 img=1.08e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.451e+00 img=1.06e-02 phy=9.21e-01 bc=2.44e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.010: μ err=0.0%, α err=0.0%
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=5.617e-01 img=1.12e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.500e+00 img=1.08e-02 phy=9.58e-01 bc=2.48e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.020: μ err=0.0%, α err=0.0%
+  Generated image 1/14 (step 0, max|u|=0.000 mm)
+  Generated image 2/14 (step 1, max|u|=1.237 mm)
+  Generated image 3/14 (step 2, max|u|=2.291 mm)
+  Generated image 4/14 (step 3, max|u|=3.171 mm)
+  Generated image 5/14 (step 4, max|u|=2.751 mm)
+  Generated image 6/14 (step 5, max|u|=2.405 mm)
+  Generated image 7/14 (step 6, max|u|=2.038 mm)
+  Generated image 8/14 (step 7, max|u|=2.200 mm)
+  Generated image 9/14 (step 8, max|u|=3.000 mm)
+  Generated image 10/14 (step 9, max|u|=3.800 mm)
+  Generated image 11/14 (step 10, max|u|=4.600 mm)
+  Generated image 12/14 (step 11, max|u|=5.400 mm)
+  Generated image 13/14 (step 12, max|u|=6.200 mm)
+  Generated image 14/14 (step 13, max|u|=7.000 mm)
+
+============================================================
+Hyperelastic Image Registration PINN
+============================================================
+  Image shape: (256, 128)
+  Image samples: 200
+  Force steps: 8
+  μ init=36.047 (true=72.095)
+  α init=3.785 (true=5.4067)
+
+  JIT-compiling (first call only)...
+  [  anchor]     0 | L=6.637e-01 img=1.32e-02 phy=1.00e+00 bc=2.45e-05 frc=1.93e-01 | μ=36.05 α=3.785
+  [ physics]   500 | L=1.623e+00 img=1.23e-02 phy=1.00e+00 bc=2.45e-05 frc=8.33e-05 | μ=65.36 α=5.799
+
+============================================================
+  μ = 72.0950 (true=72.0950, err=0.0%)
+  α = 5.4067 (true=5.4067, err=0.0%)
+============================================================
+  noise=0.050: μ err=0.0%, α err=0.0%
+  Saved → outputs/10_noise_sensitivity.png
+  Done in 181.6s
+
+======================================================================
+PIPELINE COMPLETE
+======================================================================
+
+  Registration PINN:
+    μ = 72.0950 Pa  (true: 72.0950, err: 0.00%)
+    α = 5.4067     (true: 5.4067, err: 0.00%)
+
+  v9 PINN (displacement-based):
+    μ = 72.1022 Pa  (err: 0.01%)
+    α = 5.4072     (err: 0.01%)
+
+  Output files:
+    outputs/01_synthetic_images.png
+    outputs/02_reference_mesh.png
+    outputs/03_incremental_strain.png
+    outputs/04_registration_diagnostics.png
+    outputs/05_registration_result.png
+    outputs/06_comparison_v9_vs_reg.png
+    outputs/07_force_displacement.png
+    outputs/08_deformed_mesh.png
+    outputs/09_pinn_displacement_error.png
+    outputs/10_noise_sensitivity.png
+
+======================================================================
