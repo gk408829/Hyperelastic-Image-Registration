@@ -59,7 +59,7 @@ All dependencies can be installed via pip (see below).
 
 1. **Clone the repository** (or simply download the single script):
    ```bash
-   git clone https://github.com/yourusername/hyperelastic-registration-pinn.git
+   git clone https://github.com/gk408829/Hyperelastic-Image-Registration.git
    cd hyperelastic-registration-pinn
    ```
 2. **Create a virtual environment (recommended):**
